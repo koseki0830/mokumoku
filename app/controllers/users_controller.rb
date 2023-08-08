@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  def show
+    @user = User.find(params[:id])
+  end
+
   def new
     @user = User.new
   end
@@ -16,8 +20,16 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    @user = User.find(params[:id])
+  # フォロー一覧
+  def follows
+    user = User.find(params[:id])
+    @users = user.folllowing_users
+  end
+
+  # フォロワー一覧
+  def followers
+    user = User.find(params[:id])
+    @user = user.follower_users
   end
 
   private
