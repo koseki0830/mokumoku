@@ -14,9 +14,12 @@ class User < ApplicationRecord
   has_many :notification_timings, through: :user_notification_timings
   has_one_attached :avatar
 
+  validates :name, presence: true
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
+  validates :hobby, length: { maximum: 50 }
+  validates :profile, length: { maximum: 140 }
 
   validates :email, uniqueness: true
 

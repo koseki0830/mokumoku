@@ -3,6 +3,8 @@
 class Mypage::ProfilesController < Mypage::BaseController
   def show
     @user = current_user
+    @hobby = current_user.hobby
+    @profile = current_user.profile
   end
 
   def update
@@ -17,6 +19,6 @@ class Mypage::ProfilesController < Mypage::BaseController
   private
 
   def profile_params
-    params.require(:user).permit(:name, :avatar)
+    params.require(:user).permit(:name, :avatar, :email, :hobby, :profile)
   end
 end
