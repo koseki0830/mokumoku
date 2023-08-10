@@ -3,7 +3,7 @@
 class EventsController < ApplicationController
   def index
     @q = Event.future.ransack(params[:q])
-    @events = @q.result(distinct: true).includes(:bookmarks, :prefecture, user: { avatar_attachment: :blob })
+    @events = @q.result(distinct: true).includes(:user, :bookmarks, :prefecture, user: { avatar_attachment: :blob })
                 .order(created_at: :desc).page(params[:page])
   end
 
@@ -23,8 +23,16 @@ class EventsController < ApplicationController
     render :index
   end
 
+  def show
+    @event = Event.find(params[:id])
+  end
+
   def new
     @event = Event.new
+  end
+
+  def edit
+    @event = current_user.events.find(params[:id])
   end
 
   def create
@@ -38,14 +46,6 @@ class EventsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    @event = Event.find(params[:id])
-  end
-
-  def edit
-    @event = current_user.events.find(params[:id])
   end
 
   def update
